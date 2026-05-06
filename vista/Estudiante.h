@@ -1,4 +1,5 @@
 #pragma once
+#include <regex>
 #include <mysql.h>
 #include <iostream>
 #include <string>

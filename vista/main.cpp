@@ -4,13 +4,58 @@ using namespace std;
 int main(){
     string codigo, nombres, apellidos, direccion, fecha_nacimiento;
     int telefono = 0, id_tipo_sangre = 0, id_estudiante = 0;
-    cout << "Ingrese el codigo: ";
-    cin >> codigo;
+    bool codigoValido = false;
+    regex formatoCodigo("E[0-9]{3}");
+    bool nombreValido = false;
+    bool apellidoValido = false;
+    regex formatoNombre("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$");
+
+    //Ingreso de codigo
+
+    do {
+        cout << "Ingrese el codigo (Formato E001): ";
+        cin >> codigo;
+
+        
+        if (codigo.length() == 4 && regex_match(codigo, formatoCodigo)) {
+            codigoValido = true;
+        }
+        else {
+            cout << " Formato incorrecto, use una 'E' seguida de 3 numeros" << endl;
+        }
+    } while (!codigoValido);
     cin.ignore();
-    cout << "Ingrese nombres: ";
-    getline(cin, nombres);
-    cout << "Ingrese apellidos: ";
-    getline(cin, apellidos);
+    
+    //Ingreso de nombres
+
+    do {
+        cout << "Ingrese nombres: ";
+        getline(cin, nombres);
+
+        
+        if (!nombres.empty() && nombres.length() <= 60 && regex_match(nombres, formatoNombre)) {
+            nombreValido = true;
+        }
+        else {
+            cout << " El nombre solo debe contener letras, espacios y maximo 60 caracteres" << endl;
+        }
+    } while (!nombreValido);
+    
+    
+    //Ingreso de apellidos
+
+    do {
+        cout << "Ingrese apellidos: ";
+        getline(cin, apellidos);
+
+     
+        if (!apellidos.empty() && apellidos.length() <= 60 && regex_match(apellidos, formatoNombre)) {
+            apellidoValido = true;
+        }
+        else {
+            cout << " Los apellidos solo deben contener letras, espacios y maximo 60 caracteres" << endl;
+        }
+    } while (!apellidoValido);
     cout << "Ingrese la direccion: ";
     getline(cin, direccion);
     cout << "Ingrese el telefono: ";
