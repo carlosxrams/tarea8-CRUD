@@ -9,6 +9,8 @@ int main(){
     bool nombreValido = false;
     bool apellidoValido = false;
     regex formatoNombre("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$");
+    bool direccionValida = false;
+    regex formatoDireccion("^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.#-]+$");
 
     //Ingreso de codigo
 
@@ -56,8 +58,18 @@ int main(){
             cout << " Los apellidos solo deben contener letras, espacios y maximo 60 caracteres" << endl;
         }
     } while (!apellidoValido);
-    cout << "Ingrese la direccion: ";
-    getline(cin, direccion);
+    do {
+        cout << "Ingrese la direccion: ";
+        getline(cin, direccion);
+
+        
+        if (!direccion.empty() && direccion.length() <= 100 && regex_match(direccion, formatoDireccion)) {
+            direccionValida = true;
+        }
+        else {
+            cout << " Direccion invalida, no puede hacer uso de comillas o simbolos especiales extraños (max 100 caracteres)" << endl;
+        }
+    } while (!direccionValida);
     cout << "Ingrese el telefono: ";
     cin >> telefono;
     cin.ignore();
