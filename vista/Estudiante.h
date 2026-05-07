@@ -3,6 +3,7 @@
 #include <mysql.h>
 #include <iostream>
 #include <string>
+#include <ctime>
 #include "Persona.h"
 #include "ConexionBD.h"
 using namespace std;

@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include "Estudiante.h"
 using namespace std;
@@ -14,6 +15,9 @@ int main(){
     string inputTel;
     bool telValido = false;
     regex formatoTel("^[0-9]{8}$");
+    string fecha_nac;
+    bool fechaValida = false;
+    regex formatoFecha("^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$");
     
 
     //Ingreso de codigo
@@ -84,9 +88,9 @@ int main(){
         cout << "Ingrese numero de telefono: ";
         cin >> inputTel;
 
-        // 1. Validar únicamente números y longitud (Lineamientos de image_a28533.png)
+        
         if (regex_match(inputTel, formatoTel)) {
-            // 2. Si es válido, convertimos a int para tu variable original
+            
             telefono = stoi(inputTel);
             telValido = true;
         }
@@ -96,8 +100,49 @@ int main(){
         }
     } while (!telValido);
     cin.ignore();
-    cout << "Ingrese fecha de nacimiento: ";
-    getline(cin, fecha_nacimiento);
+
+    //fechanacimiento
+
+    do {
+        cout << "Ingrese fecha de nacimiento (AAAA-MM-DD): ";
+        cin >> fecha_nac;
+
+        if (regex_match(fecha_nac, formatoFecha)) {
+            
+            int anio = stoi(fecha_nac.substr(0, 4));
+            int mes = stoi(fecha_nac.substr(5, 2));
+            int dia = stoi(fecha_nac.substr(8, 2));
+
+            
+            time_t t = time(0);
+            tm* now = localtime(&t);
+            int anioActual = now->tm_year + 1900;
+            int mesActual = now->tm_mon + 1;
+            int diaActual = now->tm_mday;
+
+            
+            if (anio > anioActual || (anio == anioActual && mes > mesActual) ||
+                (anio == anioActual && mes == mesActual && dia > diaActual)) {
+                cout << " La fecha no puede ser futura." << endl;
+            }
+           
+            else {
+                bool esBisiesto = (anio % 4 == 0 && anio % 100 != 0) || (anio % 400 == 0);
+                int diasPorMes[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+                if (esBisiesto) diasPorMes[2] = 29;
+
+                if (dia <= diasPorMes[mes]) {
+                    fechaValida = true;
+                }
+                else {
+                    cout << " Error, el mes " << mes << " no tiene " << dia << " dias." << endl;
+                }
+            }
+        }
+        else {
+            cout << " Use el formato AAAA-MM-DD (Ej: 2005-06-15)." << endl;
+        }
+    } while (!fechaValida);
     cout << "Ingrese tipo de sangre: ";
     cin >> id_tipo_sangre;
 
