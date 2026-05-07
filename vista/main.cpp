@@ -11,6 +11,10 @@ int main(){
     regex formatoNombre("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$");
     bool direccionValida = false;
     regex formatoDireccion("^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ,.#-]+$");
+    string inputTel;
+    bool telValido = false;
+    regex formatoTel("^[0-9]{8}$");
+    
 
     //Ingreso de codigo
 
@@ -58,6 +62,9 @@ int main(){
             cout << " Los apellidos solo deben contener letras, espacios y maximo 60 caracteres" << endl;
         }
     } while (!apellidoValido);
+
+    //Ingreso de direccion
+
     do {
         cout << "Ingrese la direccion: ";
         getline(cin, direccion);
@@ -70,8 +77,24 @@ int main(){
             cout << " Direccion invalida, no puede hacer uso de comillas o simbolos especiales extraños (max 100 caracteres)" << endl;
         }
     } while (!direccionValida);
-    cout << "Ingrese el telefono: ";
-    cin >> telefono;
+
+    //Ingreso de telefono EN PROCESO RECORDAR TAMBIEN SUBIR LA BASE DE DATOS A GIT MAÑANA GRACIAS YO DEL FUTURO
+
+    do {
+        cout << "Ingrese numero de telefono: ";
+        cin >> inputTel;
+
+        // 1. Validar únicamente números y longitud (Lineamientos de image_a28533.png)
+        if (regex_match(inputTel, formatoTel)) {
+            // 2. Si es válido, convertimos a int para tu variable original
+            telefono = stoi(inputTel);
+            telValido = true;
+        }
+        else {
+            cout << " Numero de telefono invalido, el telefono debe contener exactamente 8 digitos numericos, no se permiten letras, espacios ni simbolos" << endl;
+            
+        }
+    } while (!telValido);
     cin.ignore();
     cout << "Ingrese fecha de nacimiento: ";
     getline(cin, fecha_nacimiento);
