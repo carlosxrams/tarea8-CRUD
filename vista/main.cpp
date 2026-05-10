@@ -18,6 +18,10 @@ int main(){
     string fecha_nac;
     bool fechaValida = false;
     regex formatoFecha("^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$");
+    MYSQL_RES* resultado;
+    int id_sangre;
+    bool existe = false;
+    int q_estado;
     
 
     //Ingreso de codigo
@@ -82,7 +86,7 @@ int main(){
         }
     } while (!direccionValida);
 
-    //Ingreso de telefono EN PROCESO RECORDAR TAMBIEN SUBIR LA BASE DE DATOS A GIT MAÑANA GRACIAS YO DEL FUTURO
+    //Ingreso de telefono 
 
     do {
         cout << "Ingrese numero de telefono: ";
@@ -105,13 +109,13 @@ int main(){
 
     do {
         cout << "Ingrese fecha de nacimiento (AAAA-MM-DD): ";
-        cin >> fecha_nac;
+        cin >> fecha_nacimiento;
 
-        if (regex_match(fecha_nac, formatoFecha)) {
+        if (regex_match(fecha_nacimiento, formatoFecha)) {
             
-            int anio = stoi(fecha_nac.substr(0, 4));
-            int mes = stoi(fecha_nac.substr(5, 2));
-            int dia = stoi(fecha_nac.substr(8, 2));
+            int anio = stoi(fecha_nacimiento.substr(0, 4));
+            int mes = stoi(fecha_nacimiento.substr(5, 2));
+            int dia = stoi(fecha_nacimiento.substr(8, 2));
 
             
             time_t t = time(0);
@@ -143,8 +147,48 @@ int main(){
             cout << " Use el formato AAAA-MM-DD (Ej: 2005-06-15)." << endl;
         }
     } while (!fechaValida);
-    cout << "Ingrese tipo de sangre: ";
-    cin >> id_tipo_sangre;
+
+    //VALIDACION TIPOS DE SANGRE
+    ConexionBD cn;
+    cn.abrir_conexion();
+    //tipo de sangre
+
+    do {
+        cout << "Ingrese ID de tipo de sangre: ";
+        if (!(cin >> id_sangre)) { 
+            cout << " [!] Error: Ingrese un numero valido." << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
+            continue;
+        }
+        cin.ignore(1000, '\n');
+
+        string consulta = "SELECT id_tipo_sangre FROM tipo_sangre WHERE id_tipo_sangre = " + to_string(id_sangre);
+        const char* c = consulta.c_str();
+
+        q_estado = mysql_query(cn.getConector(), c);
+
+        if (!q_estado) {
+            resultado = mysql_store_result(cn.getConector());
+
+            if (resultado != NULL) {
+                if (mysql_num_rows(resultado) > 0) {
+                    existe = true;
+                    cout << "  Tipo de sangre validado" << endl;
+                }
+                else {
+                    cout << "  El ID " << id_sangre << " no existe en la tabla" << endl;
+                }
+                mysql_free_result(resultado);
+            }
+        }
+        else {
+            
+            cout << "  Error de MySQL: " << mysql_error(cn.getConector()) << endl;
+        }
+    } while (!existe);
+
+    id_tipo_sangre = id_sangre;
 
     Estudiante e = Estudiante(nombres, apellidos, direccion, telefono, fecha_nacimiento, id_tipo_sangre, codigo, id_estudiante);
     e.crear();

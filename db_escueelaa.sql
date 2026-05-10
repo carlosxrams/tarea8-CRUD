@@ -24,17 +24,18 @@ DROP TABLE IF EXISTS `estudiantes`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `estudiantes` (
   `id_estudiante` int NOT NULL AUTO_INCREMENT,
-  `codigo` varchar(4) DEFAULT NULL,
-  `nombres` varchar(60) DEFAULT NULL,
-  `apellidos` varchar(60) DEFAULT NULL,
-  `direccion` varchar(100) DEFAULT NULL,
-  `telefono` int DEFAULT NULL,
-  `fecha_nacimiento` date DEFAULT NULL,
-  `id_tipo_sangre` smallint DEFAULT NULL,
+  `codigo` varchar(4) NOT NULL,
+  `nombres` varchar(60) NOT NULL,
+  `apellidos` varchar(60) NOT NULL,
+  `direccion` varchar(100) NOT NULL,
+  `telefono` int NOT NULL,
+  `fecha_nacimiento` date NOT NULL,
+  `id_tipo_sangre` smallint NOT NULL,
   PRIMARY KEY (`id_estudiante`),
+  UNIQUE KEY `codigo` (`codigo`),
   KEY `fk_id_tipo_sangre_estudiantes_tipos_sangre_idx` (`id_tipo_sangre`),
   CONSTRAINT `fk_id_tipo_sangre_estudiantes_tipos_sangre` FOREIGN KEY (`id_tipo_sangre`) REFERENCES `tipo_sangre` (`id_tipo_sangre`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +44,7 @@ CREATE TABLE `estudiantes` (
 
 LOCK TABLES `estudiantes` WRITE;
 /*!40000 ALTER TABLE `estudiantes` DISABLE KEYS */;
-INSERT INTO `estudiantes` VALUES (1,'E001','Jose Luis','Peres Lopez','Guatemala',5555,'1999-01-22',2),(2,'E005','Carlos Alfonso','Ramos Flores','Guatemala',777,'1999-01-01',1),(6,'E004','Lucia Jimena','Perez Gomez','Guatemala',999,'1992-01-01',1);
+INSERT INTO `estudiantes` VALUES (1,'E001','Jose Luis','Peres Lopez','Guatemala',5555,'1999-01-22',2),(2,'E005','Carlos Alfonso ','Ramos Flores','Guatemala',77778888,'2005-01-01',1),(8,'E333','Karla Sofia','Molina Hernandez','Jutiapa',55556666,'2001-01-01',2);
 /*!40000 ALTER TABLE `estudiantes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -80,4 +81,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-04 22:30:36
+-- Dump completed on 2026-05-10 10:18:42
